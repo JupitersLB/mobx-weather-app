@@ -1,4 +1,4 @@
-import { types } from 'mobx-state-tree'
+import { types, destroy } from 'mobx-state-tree'
 import Hour from './Hour';
 
 const HourList = types
@@ -16,6 +16,9 @@ const HourList = types
         rainProbability: hour.RainProbability
       })
     },
+    remove(hour) {
+      destroy(hour);
+    }
     // initSelected(arr) {
     //   let tmp = arr.slice(0, 3)
     //   self.selectedHours = {...tmp}

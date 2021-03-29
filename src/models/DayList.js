@@ -1,4 +1,4 @@
-import { types } from 'mobx-state-tree'
+import { types, destroy } from 'mobx-state-tree'
 import Day from './Day';
 import DayTime from './DayTime';
 import NightTime from './NightTime';
@@ -18,6 +18,9 @@ const DayList = types
         nightTime: NightTime.create({icon: day.Night.Icon, phrase: day.Night.IconPhrase })
       })
     },
+    remove(day) {
+      destroy(day);
+    }
     // initSelected(arr) {
     //   let tmp = arr.slice(0, 3)
     //   self.selectedDays = {...tmp}

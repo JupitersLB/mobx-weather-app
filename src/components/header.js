@@ -17,7 +17,6 @@ const Header = props => {
     event.preventDefault();
     location.resetStatus();
     location.fetchLocation(value)
-    console.log(value);
   }
 
   const options = {
@@ -28,6 +27,7 @@ const Header = props => {
 
   const success = pos => {
     var crd = pos.coords;
+    location.resetStatus();
     location.fetchGeoLocation(crd)
   }
 

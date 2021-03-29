@@ -42,10 +42,10 @@ const App = props => {
           { location.status === 3 ? <CurrentForecast location={location} /> : '' }
         </div>
         <div className="hourly-forecast pt-3">
-          { location.status === 3 ? <DayList location={location} /> : ''}
+          { location.status === 3 ? <HourList location={location} /> : ''}
         </div>
         <div className="future-forecast pt-3">
-          { location.status === 3 ? <HourList location={location} /> : ''}
+          { location.status === 3 ? <DayList location={location} /> : ''}
         </div>
       </div>
       <footer>

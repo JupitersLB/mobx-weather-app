@@ -52,6 +52,7 @@ const Location = types
       Api.fetchFiveDayForecast(location).promise.then(r => {
         console.log(r)
         if (r === undefined) return
+        self.dayList.days.map(day => self.dayList.remove(day));
         r.DailyForecasts.map(day => self.dayList.add(day));
         self.setStatus();
       })
@@ -61,6 +62,7 @@ const Location = types
       Api.fetchHourlyForecast(location).promise.then(r => {
         console.log(r)
         if (r === undefined) return
+        self.hourList.hours.map(hour => self.hourList.remove(hour));
         r.map(hour => self.hourList.add(hour));
         self.setStatus();
       })
@@ -71,9 +73,9 @@ const Location = types
         console.log(r)
         if (r === undefined) return Promise.reject(sweetError("Error: API has reached its limit"))
         self.setName(r.LocalizedName);
-        self.fetchCurrent(r[0].Key);
-        self.fetchForecast(r[0].Key);
-        self.fetchHours(r[0].Key);
+        self.fetchCurrent(r.Key);
+        self.fetchForecast(r.Key);
+        self.fetchHours(r.Key);
         Swal.close();
       })
     },
