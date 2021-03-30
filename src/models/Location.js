@@ -4,7 +4,6 @@ import Swal from 'sweetalert2'
 import Api from '../actions/Api';
 import sweetError from '../utilities/sweetError';
 
-// import CurrentWeather from "./CurrentWeather";
 import DayList from "./DayList";
 import HourList from "./HourList";
 
@@ -12,7 +11,6 @@ const Location = types
   .model('Location', {
     name: types.optional(types.string, ''),
     status: types.optional(types.integer, 0),
-    // key: types.optional(types.string, ''),
     phrase: types.optional(types.string, ''),
     icon: types.optional(types.integer, 1),
     temp: types.optional(types.number, 0),
@@ -52,21 +50,23 @@ const Location = types
       Api.fetchFiveDayForecast(location).promise.then(r => {
         console.log(r)
         if (r === undefined) return
-        self.dayList.days.map(day => self.dayList.remove(day));
-        r.DailyForecasts.map(day => self.dayList.add(day));
+        self.dayList.removeSelected();
+        self.dayList.removeAllDays();
+        r.DailyForecasts.map((day, idx) => self.dayList.add(day, idx));
+        self.dayList.days.slice(0, 3).map(day => self.dayList.selected(day))
         self.setStatus();
       })
-      // .then(self.dayList.initSelected(self.dayList.days))
     },
     fetchHours(location) {
       Api.fetchHourlyForecast(location).promise.then(r => {
         console.log(r)
         if (r === undefined) return
-        self.hourList.hours.map(hour => self.hourList.remove(hour));
-        r.map(hour => self.hourList.add(hour));
+        self.hourList.removeSelected();
+        self.hourList.removeAllHours();
+        r.map((hour, idx) => self.hourList.add(hour, idx));
+        self.hourList.hours.slice(0, 3).map(hour => self.hourList.selected(hour))
         self.setStatus();
       })
-      // .then(self.hourList.initSelected(self.hourList.hours))
     },
     fetchGeoLocation(crd) {
       Api.searchGeoLocation(crd.latitude, crd.longitude).promise.then(r => {
@@ -98,33 +98,6 @@ const Location = types
     resetStatus() {
       self.status = 0;
     }
-    // setKey(newKey) {
-    //   self.key = newKey
-    // },
-    // setIcon(newIcon) {
-    //   self.icon = newIcon
-    // },
-    // setPhrase(newPhrase) {
-    //   self.phrase = newPhrase
-    // },
-    // setTemp(newTemp) {
-    //   self.temp = newTemp
-    // },
-    // setRealTemp(newRealTemp) {
-    //   self.realTemp = newRealTemp
-    // },
-    // setUVIndex(newUVIndex) {
-    //   self.UVIndex = newUVIndex
-    // },
-    // setHumidity(newHumidity) {
-    //   self.humidity = newHumidity
-    // },
-    // setWindSpeed(newWindSpeed) {
-    //   self.windSpeed = newWindSpeed
-    // },
-    // setPrecipitation(newPrecipitation) {
-    //   self.precipitation = newPrecipitation
-    // }
   }));
 
 export default Location;

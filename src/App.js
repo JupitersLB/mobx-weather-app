@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { observer } from "mobx-react";
-
-// import Api from './actions/Api';
-// import sweetError from './utilities/sweetError';
 
 import Header from './components/header';
 import CurrentForecast from './components/currentForecast';
@@ -19,20 +16,7 @@ const App = props => {
     console.log(process.env.NODE_ENV);
     console.log(process.env.REACT_APP_ACCU_API_KEY);
     console.log(location.status)
-    // handlePlacholder()
   }, [location.status])
-
-  // const handlePlacholder = () => {
-  //   Api.fetchTopFifty().promise.then(r => {
-  //     console.log(r);
-  //     if (r === undefined) return Promise.reject(sweetError("Error: API has reached its limit"))
-  //     let obj = r[Math.floor(Math.random() *50)];
-  //     location.setName(obj.LocalizedName)
-  //     location.fetchCurrent(obj.Key);
-  //     location.fetchForecast(obj.Key);
-  //     location.fetchHours(obj.Key);
-  //   })
-  // }
 
   return (
     <div className="App flex flex-col">

@@ -1,30 +1,25 @@
-import React, { useState, useEffect } from 'react';
 import { observer } from "mobx-react";
 
 import DayForecast from './dayForecast';
 
 const DayList = props => {
   const { location } = props;
-  const [selectedDays, setSelectedDays] = useState([])
-
-  useEffect(() => {
-    setSelectedDays(location.dayList.days.slice(0, 3))
-  }, [location.dayList.days])
 
   const handleClick = (event) => {
     let idx, newArr;
     if (event.currentTarget.classList.contains('left-arrow')) {
-      idx = location.dayList.days.indexOf(selectedDays[0]) - 1
+      idx = location.dayList.days.indexOf(location.dayList.selectedDays[0]) - 1
       newArr = location.dayList.days.slice(idx, (idx + 3))
     } else {
-      idx = location.dayList.days.indexOf(selectedDays[2]) + 2
+      idx = location.dayList.days.indexOf(location.dayList.selectedDays[2]) + 2
       newArr = location.dayList.days.slice((idx - 3), idx)
     }
-    setSelectedDays(newArr);
+    location.dayList.removeSelected();
+    newArr.map(d => location.dayList.selected(d))
   }
 
-  const leftArrowClass = selectedDays[0] === location.dayList.days[0] ? 'left-arrow h-8 w-8 invisible' : 'left-arrow h-8 w-8 cursor-pointer'
-  const rightArrowClass = selectedDays[selectedDays.length - 1] === location.dayList.days[location.dayList.days.length - 1] ? 'right-arrow h-8 w-8 invisible' : 'right-arrow h-8 w-8 cursor-pointer'
+  const leftArrowClass = location.dayList.selectedDays[0] === location.dayList.days[0] ? 'left-arrow h-8 w-8 invisible' : 'left-arrow h-8 w-8 cursor-pointer'
+  const rightArrowClass = location.dayList.selectedDays[location.dayList.selectedDays.length - 1] === location.dayList.days[location.dayList.days.length - 1] ? 'right-arrow h-8 w-8 invisible' : 'right-arrow h-8 w-8 cursor-pointer'
 
   return (
     <div className="weather-forecast text-purple-500 pt-3 bg-opacity-50 w-5/6 md:w-4/6 lg:w-1/2 bg-indigo-300 mx-auto rounded-2xl">
@@ -42,7 +37,7 @@ const DayList = props => {
         </div>
       </div>
       <div className="forecast-cards flex py-2 px-3">
-        { selectedDays.map( (el, idx ) => <DayForecast forecast={el} key={idx}/> ) }
+        { location.dayList.selectedDays.map( (el, idx ) => <DayForecast forecast={el} key={idx}/> ) }
       </div>
     </div>
   );

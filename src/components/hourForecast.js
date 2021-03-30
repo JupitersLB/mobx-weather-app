@@ -11,7 +11,7 @@ const HourForecast = props => {
   return (
     <div className="simple-weather-card rounded-2xl hover:bg-indigo-100 hover:bg-opacity-5 w-3/6 px-3">
       <div className="card-header pb-2">
-        <p className="text-lg font-bold">{forecast.time.substr(11,5)}</p>
+        <p className="text-lg font-bold">{forecast.format()}</p>
         <div className="max-min flex justify-center">
           <p>{forecast.temp}<span>&#176;</span>c</p>
         </div>

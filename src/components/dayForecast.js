@@ -9,8 +9,8 @@ const DayForecast = props => {
   const dayImage = bundleLoader.loadImage(images, `${forecast.dayTime.icon}.png`);
   const nightImage = bundleLoader.loadImage(images, `${forecast.nightTime.icon}.png`);
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-  const dateObject = new Date(forecast.name)
-  const day = days[dateObject.getDay()]
+  // const dateObject = new Date(forecast.name)
+  const day = days[forecast.format()]
 
   return (
     <div className="simple-weather-card rounded-2xl hover:bg-indigo-100 hover:bg-opacity-5 w-3/6 px-2">

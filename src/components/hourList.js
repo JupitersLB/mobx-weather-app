@@ -1,30 +1,25 @@
-import React, { useState, useEffect } from 'react';
 import { observer } from "mobx-react";
 
 import HourForecast from './hourForecast';
 
 const HourList = props => {
   const { location } = props;
-  const [selectedHours, setSelectedHours] = useState([])
-
-  useEffect(() => {
-    setSelectedHours(location.hourList.hours.slice(0, 3))
-  }, [location.hourList.hours])
 
   const handleClick = (event) => {
     let idx, newArr;
     if (event.currentTarget.classList.contains('left-arrow')) {
-      idx = location.hourList.hours.indexOf(selectedHours[0]) - 1
+      idx = location.hourList.hours.indexOf(location.hourList.selectedHours[0]) - 1
       newArr = location.hourList.hours.slice(idx, (idx + 3))
     } else {
-      idx = location.hourList.hours.indexOf(selectedHours[2]) + 2
+      idx = location.hourList.hours.indexOf(location.hourList.selectedHours[2]) + 2
       newArr = location.hourList.hours.slice((idx - 3), idx)
     }
-    setSelectedHours(newArr);
+    location.hourList.removeSelected();
+    newArr.map(h => location.hourList.selected(h))
   }
 
-  const leftArrowClass = selectedHours[0] === location.hourList.hours[0] ? 'left-arrow h-8 w-8 invisible' : 'left-arrow h-8 w-8 cursor-pointer'
-  const rightArrowClass = selectedHours[selectedHours.length - 1] === location.hourList.hours[location.hourList.hours.length - 1] ? 'right-arrow h-8 w-8 invisible' : 'right-arrow h-8 w-8 cursor-pointer';
+  const leftArrowClass = location.hourList.selectedHours[0] === location.hourList.hours[0] ? 'left-arrow h-8 w-8 invisible' : 'left-arrow h-8 w-8 cursor-pointer'
+  const rightArrowClass = location.hourList.selectedHours[location.hourList.selectedHours.length - 1] === location.hourList.hours[location.hourList.hours.length - 1] ? 'right-arrow h-8 w-8 invisible' : 'right-arrow h-8 w-8 cursor-pointer';
 
   return (
     <div className="weather-forecast text-purple-500 pt-3 bg-opacity-50 w-5/6 md:w-4/6 lg:w-1/2 bg-indigo-300 mx-auto rounded-2xl">
@@ -42,7 +37,7 @@ const HourList = props => {
         </div>
       </div>
       <div className="forecast-cards flex py-2 px-3">
-        { selectedHours.map( (el, idx ) => <HourForecast forecast={el} key={idx}/> ) }
+        { location.hourList.selectedHours.map( (el, idx ) => <HourForecast forecast={el} key={idx}/> ) }
       </div>
     </div>
   );

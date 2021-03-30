@@ -4,11 +4,12 @@ import Hour from './Hour';
 const HourList = types
   .model('HourList', {
     hours: types.array(Hour),
-    // selectedHours: types.array(Hour)
+    selectedHours: types.array(types.maybe(types.reference(types.late(() => Hour))))
   })
   .actions(self => ({
-    add(hour) {
+    add(hour, idx) {
       self.hours.push({
+        id: idx.toString(),
         time: hour.DateTime,
         icon: hour.WeatherIcon,
         temp: hour.Temperature.Value,
@@ -18,11 +19,16 @@ const HourList = types
     },
     remove(hour) {
       destroy(hour);
+    },
+    removeAllHours() {
+      self.hours.clear();
+    },
+    removeSelected() {
+      self.selectedHours.clear();
+    },
+    selected(hour) {
+      self.selectedHours.push(hour)
     }
-    // initSelected(arr) {
-    //   let tmp = arr.slice(0, 3)
-    //   self.selectedHours = {...tmp}
-    // }
   }));
 
 export default HourList;

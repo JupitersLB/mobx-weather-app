@@ -4,11 +4,17 @@ import NightTime from './NightTime';
 
 const Day = types
   .model('Day', {
+    id: types.identifier,
     name: types.string,
     maxTemp: types.number,
     minTemp: types.number,
-    dayTime: types.optional(DayTime, {icon: 1, phrase: ''}),
-    nightTime: types.optional(NightTime, {icon: 1, phrase: ''})
-  });
+    dayTime: types.maybe(DayTime),
+    nightTime: types.maybe(NightTime)
+  })
+  .views(self => ({
+    format() {
+      return new Date(self.name).getDay();
+    }
+  }));
 
 export default Day;

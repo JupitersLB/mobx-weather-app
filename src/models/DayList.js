@@ -6,11 +6,12 @@ import NightTime from './NightTime';
 const DayList = types
   .model('DayList', {
     days: types.array(Day),
-    // selectedDays: types.array(Day)
+    selectedDays: types.array(types.maybe(types.reference(types.late(() => Day))))
   })
   .actions(self => ({
-    add(day) {
+    add(day, idx) {
       self.days.push({
+        id: idx.toString(),
         name: day.Date,
         maxTemp: day.Temperature.Maximum.Value,
         minTemp: day.Temperature.Minimum.Value,
@@ -20,11 +21,16 @@ const DayList = types
     },
     remove(day) {
       destroy(day);
+    },
+    removeAllDays() {
+      self.days.clear();
+    },
+    removeSelected() {
+      self.selectedDays.clear();
+    },
+    selected(day) {
+      self.selectedDays.push(day)
     }
-    // initSelected(arr) {
-    //   let tmp = arr.slice(0, 3)
-    //   self.selectedDays = {...tmp}
-    // }
-  }))
+  }));
 
 export default DayList;
